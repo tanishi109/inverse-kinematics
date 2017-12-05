@@ -3,6 +3,7 @@ import Head from "next/head";
 
 import Segment from "./Segment";
 import Mathtool from "./Mathtool";
+import mouseHandler from "./mouseHandler"
 
 class Stage {
   constructor(width, height, ctx, entities = []) {
@@ -15,6 +16,8 @@ class Stage {
   update() {
     const {width, height, ctx, entities} = this;
     ctx.clearRect(0, 0, width, height);
+
+    mouseHandler.handle();
 
     entities.forEach((ent) => {
       ent.update(ctx);
@@ -50,6 +53,10 @@ export default class extends React.Component {
   componentDidMount() {
     const stage = initStage();
     updateStage(stage);
+
+    window.addEventListener("mousemove", (e) => {
+      mouseHandler.setMap("mousemove", [e.offsetX, e.offsetY]);
+    });
   }
 
   render() {

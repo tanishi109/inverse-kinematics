@@ -1,4 +1,5 @@
 import Mathtool from "./Mathtool";
+import mouseHandler from "./mouseHandler"
 
 const PIN_R = 2;
 const PIN_MARGIN = 10;
@@ -12,15 +13,34 @@ class Segment {
     this.degree = 20;
 
     // init pins
-    const cx = [
-      x + PIN_MARGIN,
-      x + w - PIN_MARGIN,
+    const pos = [
+      this.getLeftPinPos(),
+      this.getRightPinPos(),
     ];
-    const cy = y + h / 2;
 
     this.pins = [0, 1].map((n) => {
-      return new Pin(cx[n], cy, PIN_R, this);
+      return new Pin(pos[n][0], pos[n][1], PIN_R, this);
     });
+
+    mouseHandler.addHandler((v) => {
+      const [mouseX, mouseY] = v;
+      const {x, y, height} = this;
+      const dx = mouseX - (x + PIN_MARGIN);
+      const dy = mouseY - (y + height / 2);
+      const radian = Math.atan2(dy, dx);
+
+      this.degree = Mathtool.radToDeg(radian);
+    });
+  }
+
+  getLeftPinPos() {
+    const {x, y, height} = this;
+    return [x + PIN_MARGIN, y + height / 2];
+  }
+
+  getRightPinPos() {
+    const {x, y, width, height} = this;
+    return [x + width - PIN_MARGIN, y + height / 2];
   }
 
   pos() {
@@ -32,12 +52,16 @@ class Segment {
     // render
     ctx.save();
     const {x, y, width, height, degree} = this;
+    const [tx, ty] = this.getLeftPinPos();
 
+    ctx.translate(tx, ty);
     ctx.rotate(Mathtool.degToRad(degree));
-
+    ctx.translate(-tx, -ty);
+    
     ctx.beginPath();
     ctx.rect(x, y, width, height);
     ctx.stroke();
+
     ctx.restore();
 
     this.pins.forEach((p) => {
@@ -58,8 +82,11 @@ class Pin {
     // render
     ctx.save();
     const {x, y, r, segment} = this;
+    const [tx, ty] = segment.getLeftPinPos();
 
+    ctx.translate(tx, ty);
     ctx.rotate(Mathtool.degToRad(segment.degree));
+    ctx.translate(-tx, -ty);
 
     ctx.beginPath();
     ctx.arc(x, y, r*2, 0, 360 * Math.PI / 180);
