@@ -1,8 +1,8 @@
 import React from "react";
 import Head from "next/head";
 
-const MathTool = {
-};
+import Segment from "./Segment";
+import Mathtool from "./Mathtool";
 
 class Stage {
   constructor(width, height, ctx, entities = []) {
@@ -22,28 +22,6 @@ class Stage {
   }
 }
 
-class Segment {
-  constructor(x, y, w, h) {
-    this.x = x;
-    this.y = y;
-    this.width = w;
-    this.height = h;
-
-    // init pins
-    // this.fingers_ = fingersKey.map((key, i) => {
-    //   return new Finger(this, key, i * 30);
-    // });
-  }
-
-  update(ctx) {
-    // render
-    ctx.beginPath();
-    const {x, y, width, height} = this;
-    ctx.rect(x, y, width, height);
-    ctx.stroke();
-  }
-};
-
 const initStage = () => {
   const canvas = document.getElementById("stage");
   const ctx = canvas.getContext("2d");
@@ -53,7 +31,7 @@ const initStage = () => {
   canvas.setAttribute("width", width);
   canvas.setAttribute("height", height);
 
-  const hand1 = new Segment(80, 80, 30, 100);
+  const hand1 = new Segment(80, 80, 100, 30);
   const entities = [hand1];
 
   return new Stage(width, height, ctx, entities);
