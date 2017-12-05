@@ -1,0 +1,31 @@
+{
+  "name": "inverse-kinematics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "next",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "next build && next export",
+    "deploy": "gh-pages -d out"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanishi109/inverse-kinematics.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tanishi109/inverse-kinematics/issues"
+  },
+  "homepage": "https://github.com/tanishi109/inverse-kinematics#readme",
+  "dependencies": {
+    "gh-pages": "^1.1.0",
+    "lodash": "^4.17.4",
+    "next": "^4.2.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "styled-jsx": "^2.2.1",
+    "webpack": "^3.10.0"
+  }
+}
