@@ -19,7 +19,7 @@ class Segment {
     ];
 
     this.pins = [0, 1].map((n) => {
-      return new Pin(pos[n][0], pos[n][1], PIN_R, this);
+      return new Pin(pos[n][0], pos[n][1], PIN_R, this, n === 0);
     });
 
     mouseHandler.addHandler((v) => {
@@ -30,7 +30,20 @@ class Segment {
       const radian = Math.atan2(dy, dx);
 
       this.degree = Mathtool.radToDeg(radian);
+
+      const w = this.getRightPinPosRotated()[0] - x;
+      const h = this.getRightPinPosRotated()[1] - y;
+      this.x = mouseX - w;
+      this.y = mouseY - h;
     });
+  }
+
+  getRightPinPosRotated() {
+    const {degree, width} = this;
+    const radian = Mathtool.degToRad(degree);
+    const rx = this.getLeftPinPos()[0] + Math.cos(radian) * width;
+    const ry = this.getLeftPinPos()[1] + Math.sin(radian) * width;
+    return [rx, ry];
   }
 
   getLeftPinPos() {
@@ -71,14 +84,23 @@ class Segment {
 };
 
 class Pin {
-  constructor(x, y, r, segment) {
+  constructor(x, y, r, segment, isLeft) {
     this.x = x;
     this.y = y;
     this.r = r;
     this.segment = segment;
+    this.isLeft = isLeft;
   }
 
   update(ctx) {
+    if (this.isLeft) {
+      this.x = this.segment.getLeftPinPos()[0];
+      this.y = this.segment.getLeftPinPos()[1];
+    } else {
+      this.x = this.segment.getRightPinPos()[0];
+      this.y = this.segment.getRightPinPos()[1];
+    }
+
     // render
     ctx.save();
     const {x, y, r, segment} = this;
