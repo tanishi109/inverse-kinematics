@@ -65,8 +65,8 @@ class Segment {
   getRightPinPosRotated() {
     const {degree, width} = this;
     const radian = Mathtool.degToRad(degree);
-    const rx = this.getLeftPinPos()[0] + Math.cos(radian) * width;
-    const ry = this.getLeftPinPos()[1] + Math.sin(radian) * width;
+    const rx = this.getLeftPinPos()[0] + Math.cos(radian) * (width - PIN_MARGIN * 2);
+    const ry = this.getLeftPinPos()[1] + Math.sin(radian) * (width - PIN_MARGIN * 2);
     return [rx, ry];
   }
 
