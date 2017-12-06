@@ -10,8 +10,8 @@ export const segmentFactory = {
     return new Segment(...INIT_POS, w, h, (segment, mouseValue) => {
       const [mouseX, mouseY] = mouseValue;
       const {x, y, height} = segment;
-      const dx = mouseX - (x + PIN_MARGIN);
-      const dy = mouseY - (y + height / 2);
+      const dx = mouseX - segment.getLeftPinPos()[0];
+      const dy = mouseY - segment.getLeftPinPos()[1];
       const radian = Math.atan2(dy, dx);
       segment.degree = Mathtool.radToDeg(radian);
 
@@ -26,15 +26,15 @@ export const segmentFactory = {
     return new Segment(...INIT_POS, w, h, (segment, _) => {
       const {x, y, height} = segment;
       const {x: px, y: py} = parent;
-      const dx = px - (x + PIN_MARGIN);
-      const dy = py - (y + height / 2);
+      const dx = parent.getLeftPinPos()[0] - segment.getLeftPinPos()[0];
+      const dy = parent.getLeftPinPos()[1] - segment.getLeftPinPos()[1];
       const radian = Math.atan2(dy, dx);
       segment.degree = Mathtool.radToDeg(radian);
 
       const w = segment.getRightPinPosRotated()[0] - x;
       const h = segment.getRightPinPosRotated()[1] - y;
-      segment.x = px - w;
-      segment.y = py - h;
+      segment.x = px - w + PIN_MARGIN;
+      segment.y = py - h + height / 2;
     })
   },
 };
