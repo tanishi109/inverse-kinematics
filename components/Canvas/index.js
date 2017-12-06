@@ -34,9 +34,16 @@ const initStage = () => {
   canvas.setAttribute("width", width);
   canvas.setAttribute("height", height);
 
-  const seg0 = segmentFactory.mouseChaser(100, 30);
-  const seg1 = segmentFactory.parentChaser(100, 30, seg0);
-  const entities = [seg0, seg1];
+  const seg0 = segmentFactory.mouseChaser(20, 3);
+
+  let parent = seg0;
+  const segs = "_".repeat(50).split("").map((_, i) => {
+    const segI = segmentFactory.parentChaser(20, 3, parent);
+    parent = segI;
+    return segI;
+  });
+
+  const entities = [seg0, ...segs];
 
   return new Stage(width, height, ctx, entities);
 };
