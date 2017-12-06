@@ -66,7 +66,9 @@ export default class extends React.Component {
     updateStage(stage);
 
     window.addEventListener("mousemove", (e) => {
-      mouseHandler.setMap("mousemove", [e.offsetX, e.offsetY]);
+      const rect = document.getElementById("stage").getBoundingClientRect();
+
+      mouseHandler.setMap("mousemove", [e.clientX - rect.left, e.clientY - rect.top]);
     });
   }
 
@@ -77,13 +79,12 @@ export default class extends React.Component {
         <canvas id="stage" className="stage" />
         <style jsx>{`
           div {
-            width: calc(100vw - 50px);
+            width: 100vw;
             height: 100vh;
-            margin: 25px;
           }
           canvas {
-            width: calc(100vw - 25px - 25px);
-            height: calc(100vh - 25px - 25px);
+            width: 100vw;
+            height: 100vh;
             border: 1px solid #000;
             border-radius: 2px;
           }
