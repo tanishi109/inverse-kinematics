@@ -62,6 +62,14 @@ class Segment {
     });
   }
 
+  getLeftPinPosRotated() {
+    const {x, y, degree, height} = this;
+    const radian = Mathtool.degToRad(degree);
+    const rx = x + Math.cos(radian) * PIN_MARGIN;
+    const ry = y + Math.sin(radian) * (height / 2);
+    return [rx, ry];
+  }
+
   getRightPinPosRotated() {
     const {degree, width} = this;
     const radian = Mathtool.degToRad(degree);
