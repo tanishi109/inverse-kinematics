@@ -34,8 +34,8 @@ const initStage = () => {
   canvas.setAttribute("width", width);
   canvas.setAttribute("height", height);
 
-  const seg0 = segmentFactory.mouseChaser(80, 80, 100, 30);
-  const seg1 = segmentFactory.parentChaser(80, 80, 100, 30, seg0);
+  const seg0 = segmentFactory.mouseChaser(100, 30);
+  const seg1 = segmentFactory.parentChaser(100, 30, seg0);
   const entities = [seg0, seg1];
 
   return new Stage(width, height, ctx, entities);

@@ -3,10 +3,11 @@ import mouseHandler from "./mouseHandler"
 
 const PIN_R = 2;
 const PIN_MARGIN = 10;
+const INIT_POS = [0, 0];
 
 export const segmentFactory = {
-  mouseChaser(x, y, w, h) {
-    return new Segment(x, y, w, h, (segment, mouseValue) => {
+  mouseChaser(w, h) {
+    return new Segment(...INIT_POS, w, h, (segment, mouseValue) => {
       const [mouseX, mouseY] = mouseValue;
       const {x, y, height} = segment;
       const dx = mouseX - (x + PIN_MARGIN);
@@ -21,8 +22,8 @@ export const segmentFactory = {
     })
   },
 
-  parentChaser(x, y, w, h, parent) {
-    return new Segment(x, y, w, h, (segment, _) => {
+  parentChaser(w, h, parent) {
+    return new Segment(...INIT_POS, w, h, (segment, _) => {
       const {x, y, height} = segment;
       const {x: px, y: py} = parent;
       const dx = px - (x + PIN_MARGIN);
@@ -44,7 +45,7 @@ class Segment {
     this.y = y;
     this.width = w;
     this.height = h;
-    this.degree = 20;
+    this.degree = 45;
 
     // init pins
     const pos = [
