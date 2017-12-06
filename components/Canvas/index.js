@@ -34,11 +34,13 @@ const initStage = () => {
   canvas.setAttribute("width", width);
   canvas.setAttribute("height", height);
 
-  const seg0 = segmentFactory.mouseChaser(20, 3);
+  const SEG_WIDTH = 30;
+  const SEG_H = 10;
+  const seg0 = segmentFactory.mouseChaser(SEG_WIDTH, SEG_H);
 
   let parent = seg0;
   const segs = "_".repeat(50).split("").map((_, i) => {
-    const segI = segmentFactory.parentChaser(20, 3, parent);
+    const segI = segmentFactory.parentChaser(SEG_WIDTH, SEG_H, parent);
     parent = segI;
     return segI;
   });
