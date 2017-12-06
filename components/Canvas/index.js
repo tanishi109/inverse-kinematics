@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 
-import Segment from "./Segment";
+import {segmentFactory} from "./Segment";
 import Mathtool from "./Mathtool";
 import mouseHandler from "./mouseHandler"
 
@@ -34,8 +34,9 @@ const initStage = () => {
   canvas.setAttribute("width", width);
   canvas.setAttribute("height", height);
 
-  const hand1 = new Segment(80, 80, 100, 30);
-  const entities = [hand1];
+  const seg0 = segmentFactory.mouseChaser(80, 80, 100, 30);
+  const seg1 = segmentFactory.parentChaser(80, 80, 100, 30, seg0);
+  const entities = [seg0, seg1];
 
   return new Stage(width, height, ctx, entities);
 };

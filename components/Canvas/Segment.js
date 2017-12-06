@@ -4,8 +4,42 @@ import mouseHandler from "./mouseHandler"
 const PIN_R = 2;
 const PIN_MARGIN = 10;
 
+export const segmentFactory = {
+  mouseChaser(x, y, w, h) {
+    return new Segment(x, y, w, h, (segment, mouseValue) => {
+      const [mouseX, mouseY] = mouseValue;
+      const {x, y, height} = segment;
+      const dx = mouseX - (x + PIN_MARGIN);
+      const dy = mouseY - (y + height / 2);
+      const radian = Math.atan2(dy, dx);
+      segment.degree = Mathtool.radToDeg(radian);
+
+      const w = segment.getRightPinPosRotated()[0] - x;
+      const h = segment.getRightPinPosRotated()[1] - y;
+      segment.x = mouseX - w;
+      segment.y = mouseY - h;
+    })
+  },
+
+  parentChaser(x, y, w, h, parent) {
+    return new Segment(x, y, w, h, (segment, _) => {
+      const {x, y, height} = segment;
+      const {x: px, y: py} = parent;
+      const dx = px - (x + PIN_MARGIN);
+      const dy = py - (y + height / 2);
+      const radian = Math.atan2(dy, dx);
+      segment.degree = Mathtool.radToDeg(radian);
+
+      const w = segment.getRightPinPosRotated()[0] - x;
+      const h = segment.getRightPinPosRotated()[1] - y;
+      segment.x = px - w;
+      segment.y = py - h;
+    })
+  },
+};
+
 class Segment {
-  constructor(x, y, w, h) {
+  constructor(x, y, w, h, handler) {
     this.x = x;
     this.y = y;
     this.width = w;
@@ -22,19 +56,8 @@ class Segment {
       return new Pin(pos[n][0], pos[n][1], PIN_R, this, n === 0);
     });
 
-    mouseHandler.addHandler((v) => {
-      const [mouseX, mouseY] = v;
-      const {x, y, height} = this;
-      const dx = mouseX - (x + PIN_MARGIN);
-      const dy = mouseY - (y + height / 2);
-      const radian = Math.atan2(dy, dx);
-
-      this.degree = Mathtool.radToDeg(radian);
-
-      const w = this.getRightPinPosRotated()[0] - x;
-      const h = this.getRightPinPosRotated()[1] - y;
-      this.x = mouseX - w;
-      this.y = mouseY - h;
+    mouseHandler.addHandler((value) => {
+      handler(this, value);
     });
   }
 
@@ -117,5 +140,3 @@ class Pin {
     ctx.restore();
   }
 }
-
-export default Segment;
